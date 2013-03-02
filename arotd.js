@@ -5,91 +5,83 @@ var persistence = {};
 			localStorage.setItem("id", 0);
 		}
 		return Math.floor(localStorage.getItem("id"))
-	} 
+	}
 
 	this.set_id = function(token) {
 		localStorage.setItem("id", token)
-	}	
+	}
 }).apply(persistence)
 
 var arotd = {};
 (function() {
 	var currentNumber = persistence.get_id();
-	
+
 	var questions = [];
-	
-    function Question(questionArray){
-        this.question = questionArray[0];
-        this.author = questionArray[1].toLowerCase();
+	var authorWithQuestions;
+
+	function Question(questionArray) {
+		this.question = questionArray[0];
+		this.author = questionArray[1].toLowerCase();
 		this.number = questionArray[2];
-    }
-
-    (function() {
-        for (i in $._questions) {
-            questions.push(new Question($._questions[i]));
-        }
-    })()
-
-	this.questionsOf = function(name) {
-		var result = new Array();
-		for (var i in questions) {
-			var question = questions[i]
-			if (question.author == name) {
-				result.push(question);
-			}
-		}
-		return result;
 	}
-	
+
+	(function() {
+		for (i in $._questions) {
+			questions.push(new Question($._questions[i]));
+		}
+	})()
+
 	this.currentQuestion = function() {
 		return questions[currentNumber];
 	}
-	
+
 	this.previousQuestion = function() {
-        currentNumber++;
-        if (currentNumber > questions.length - 1) {
-            currentNumber = 0;
-        }
-        persistence.set_id(currentNumber);
-    }
+		currentNumber++;
+		if (currentNumber > questions.length - 1) {
+			currentNumber = 0;
+		}
+		persistence.set_id(currentNumber);
+	}
 
-    this.nextQuestion = function() {
-       currentNumber--;
-       if (currentNumber < 0) {
-           currentNumber = questions.length - 1;
-       }
-       persistence.set_id(currentNumber);
-    }
+	this.nextQuestion = function() {
+		currentNumber--;
+		if (currentNumber < 0) {
+			currentNumber = questions.length - 1;
+		}
+		persistence.set_id(currentNumber);
+	}
 
-    this.randomQuestion = function() {
+	this.randomQuestion = function() {
 		currentNumber = Math.floor(Math.random() * questions.length);
 		persistence.set_id(currentNumber);
-    }
+	}
 
-    this.firstQuestion = function() {
+	this.firstQuestion = function() {
 		currentNumber = questions.length - 1;
 		persistence.set_id(currentNumber);
-    }
+	}
 
-    this.lastQuestion = function() {
+	this.lastQuestion = function() {
 		currentNumber = 0;
 		persistence.set_id(currentNumber);
-    }
+	}
 
 	this.authorWithQuestions = function() {
-		var authorWithQuestions = [];
-		
-        for (var i in questions) {
-            var question = questions[i]
-			if (!authorWithQuestions[question.author]) {
-				authorWithQuestions[question.author] = [];
-			}
-			authorWithQuestions[question.author].push(question);
-        }
+		if (!authorWithQuestions) {
+			authorWithQuestions = [];
 
-        return authorWithQuestions;
+			for (var i in questions) {
+				var question = questions[i]
+				if (!authorWithQuestions[question.author]) {
+					authorWithQuestions[question.author] = [];
+				}
+				authorWithQuestions[question.author].push(question);
+			}
+		}
+
+		return authorWithQuestions;
 	}
-    
+
 }).apply(arotd)
 
 var display = {};
@@ -144,7 +136,7 @@ var display = {};
 			return name;
 		}
 	}
-	
+
 }).apply(display)
 
 jQuery.fn.arotd = function() {
@@ -167,6 +159,3 @@ jQuery.fn.contrib = function() {
 		var last = lastElement;
 	}
 }
-
-
-

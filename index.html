@@ -6,6 +6,8 @@
         <meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 		<link rel="stylesheet" href="jquery.mobile-1.3.0.min.css" />
+		<link rel="apple-touch-icon-precomposed" href="images/arotd-icon.png"/>
+		<link rel="apple-touch-startup-image" href="images/Default.png">
 		<script src="jquery-1.9.1.min.js"></script>
 		<script src="jquery.mobile-1.3.0.min.js"></script>
 
@@ -35,7 +37,7 @@
     <body>
         <div data-role="page" id="jqm-home">
         	<div data-role="header" data-position=fixed id='header'>
-                <h1>AROTD</h1>
+				<p align="center">Agile Retroflection of the Day</p>
         	</div>
         	
         	<div data-role="content" id="content">
@@ -48,7 +50,7 @@
 				<div data-role="controlgroup" data-type="horizontal" align="center">
 	                <a href="#" id="first" data-role=button data-icon="first" data-iconpos="notext"></a>
 	                <a href="#" id="previous" data-role=button data-icon="arrow-l" data-iconpos="notext"></a>
-                	<a href="#about" data-role=button data-transition="slideup" data-icon="info" data-iconpos="notext"></a>
+                	<a href="#authors-page" data-role=button data-transition="slideup" data-icon="info" data-iconpos="notext"></a>
                 	<a href="#" id="random" data-role=button data-icon="refresh" data-iconpos="notext"></a>
                 	<a href="#" id="next" data-role=button data-icon="arrow-r" data-iconpos="notext"></a>
                 	<a href="#" id="last" data-role=button data-icon="last" data-iconpos="notext"></a>
@@ -56,17 +58,17 @@
             </div>
         </div>
      
-        <div data-role="page" id="about" data-add-back-btn=true>
+        <div data-role="page" id="authors-page" data-add-back-btn=true>
         	<div  data-role="header" id='header'>
-                <h1>Questions by:</h1>
+                <h1>Authors</h1>
         	</div>
         	
         	<div data-role="content" id="contrib">
 				<div data-role="collapsible-set" id="authors" data-theme="a" data-content-theme="c">
+					
 				</div>
-<!--	            <ul data-role="listview" id="authors" data-filter="true" data-inset="true"></ul> -->
                 <p>Originally tweeted by <a href="http://twitter.com/retroflection">@Retroflection</a></p>
-                <p>Powered by <a href="http://www.yaal.fr">Yaal</a></p>
+                <p>Site by <a href="http://www.twitter.com/leiderleider">@leiderleider</a>, based on work by<a href="http://www.yaal.fr">Yaal</a></p>
                 <p>Artwork by <a href="http://www.dot26.com">artix studio</a></p>
             </div>
         </div>
