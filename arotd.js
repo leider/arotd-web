@@ -142,6 +142,25 @@ var display = {};
 jQuery.fn.arotd = function() {
 	display.show();
 	display.bindButtons();
+	$("div:jqmData(role=page)").bind ("swipeleft", function (event)
+	{
+		if (this.id == "authors-page") {
+			return;
+		}
+		event.stopImmediatePropagation();
+		arotd.nextQuestion();
+		display.show();
+	});
+
+	$("div:jqmData(role=page)").bind ("swiperight", function (event)
+	{
+		if (this.id == "authors-page") {
+			return;
+		}
+		event.stopImmediatePropagation();
+		arotd.previousQuestion();
+		display.show();
+	});
 }
 
 jQuery.fn.contrib = function() {
