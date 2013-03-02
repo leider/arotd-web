@@ -1,141 +1,172 @@
-(function(jQuery, undefined) {
-    Question = function(question, author, number){
-        this.question = question
-        this.author = author
-		this.number = number
+var persistence = {};
+(function() {
+	this.get_id = function() {
+		if (!localStorage.getItem("id")) {
+			localStorage.setItem("id", 0);
+		}
+		return Math.floor(localStorage.getItem("id"))
+	} 
+
+	this.set_id = function(token) {
+		localStorage.setItem("id", token)
+	}	
+}).apply(persistence)
+
+var arotd = {};
+(function() {
+	var currentNumber = persistence.get_id();
+	
+	var questions = [];
+	
+    function Question(questionArray){
+        this.question = questionArray[0];
+        this.author = questionArray[1].toLowerCase();
+		this.number = questionArray[2];
     }
 
-    $.questions = []
-    $.convert_list = function() {
+    (function() {
         for (i in $._questions) {
-            var q = $._questions[i]
-            $.questions.push(new Question(q[0], q[1], q[2]))
+            questions.push(new Question($._questions[i]));
         }
-    }
-    $.convert_list()
+    })()
 
-    $.display_current = function() {
-        var current = $.questions[$.i]
-        $.question.html(current.question)
-		$.author.html($.link(current.author))
-        $.number.html(current.number)
-    }
-
-    $.previous_question_id = function() {
-        $.i++
-        if ($.i > $.questions.length - 1) {
-            $.i = 0
-        }
-        $.display_current()
-        $.set_id($.i)
-    }
-
-     $.next_question_id = function() {
-        $.i--
-        if ($.i < 0) {
-            $.i = $.questions.length - 1
-        }
-        $.display_current()
-        $.set_id($.i)
-     }
-
-     $.random_question_id = function() {
-     	$.i = randomnumber=Math.floor(Math.random()*$.questions.length)
-        $.display_current()
-        $.set_id($.i)
-     }
-
-     $.first_question_id = function() {
-		$.i = $.questions.length - 1
-        $.display_current()
-        $.set_id($.i)
-     }
-
-     $.last_question_id = function() {
-     	$.i = 0
-        $.display_current()
-        $.set_id($.i)
-     }
-
-    $.fn.arotd = function(question, author, number, first, previous, random, next, last) {
-        $.question = $(question)
-        $.author = $(author)
-        $.number = $(number)
-		$.first = $(first)
-		$.previous = $(previous)
-		$.random = $(random)
-		$.last = $(last)
-
-        $.get_id($.display_current)
-
-        $(next).unbind()
-        $(next).click(function() {
-            $.next_question_id()
-        })
-
-        $.previous.unbind()
-        $.previous.click(function() {
-            $.previous_question_id()
-        })
-
-        $.random.unbind()
-        $.random.click(function() {
-            $.random_question_id()
-        })
-
-        $.first.unbind()
-        $.first.click(function() {
-            $.first_question_id()
-        })
-
-        $.last.unbind()
-        $.last.click(function() {
-            $.last_question_id()
-        })
-    }
-
-    $.fn.contrib = function() {
-        var counted = {}
-        for (var i in $.questions) {
-            var q = $.questions[i]
-            if (counted[q.author]) {
-                counted[q.author]++
-            } else {
-                counted[q.author] = 1
-            }
-        }
-
-        var sortable = new Array()
-        for (var author in counted) {
-            sortable.push([author, counted[author]])
-        }
-        function compare(sortable_1, sortable_2) {
-            if ($.realname(sortable_1[0]).toUpperCase() < $.realname(sortable_2[0]).toUpperCase()) return -1;
-            if ($.realname(sortable_1[0]).toUpperCase() > $.realname(sortable_2[0]).toUpperCase()) return 1;
-			return 0;
-        }
-
-        var sorted = sortable.sort(compare)
-        for (tuple in sorted) {
-            var contrib = sorted[tuple]
-           $(this).find("ul").append("<li>" + $.link(contrib[0]) + "<span class=ui-li-count>" + contrib[1] + "</span>" + "</li>")
+	this.questionsOf = function(name) {
+		var result = new Array();
+		for (var i in questions) {
+			var question = questions[i]
+			if (question.author == name) {
+				result.push(question);
+			}
 		}
+		return result;
+	}
+	
+	this.currentQuestion = function() {
+		return questions[currentNumber];
+	}
+	
+	this.previousQuestion = function() {
+        currentNumber++;
+        if (currentNumber > questions.length - 1) {
+            currentNumber = 0;
+        }
+        persistence.set_id(currentNumber);
     }
- 
-	$.link = function(name) {
+
+    this.nextQuestion = function() {
+       currentNumber--;
+       if (currentNumber < 0) {
+           currentNumber = questions.length - 1;
+       }
+       persistence.set_id(currentNumber);
+    }
+
+    this.randomQuestion = function() {
+		currentNumber = Math.floor(Math.random() * questions.length);
+		persistence.set_id(currentNumber);
+    }
+
+    this.firstQuestion = function() {
+		currentNumber = questions.length - 1;
+		persistence.set_id(currentNumber);
+    }
+
+    this.lastQuestion = function() {
+		currentNumber = 0;
+		persistence.set_id(currentNumber);
+    }
+
+	this.authorWithQuestions = function() {
+		var authorWithQuestions = [];
+		
+        for (var i in questions) {
+            var question = questions[i]
+			if (!authorWithQuestions[question.author]) {
+				authorWithQuestions[question.author] = [];
+			}
+			authorWithQuestions[question.author].push(question);
+        }
+
+        return authorWithQuestions;
+	}
+    
+}).apply(arotd)
+
+var display = {};
+(function() {
+	this.show = function() {
+		var current = arotd.currentQuestion();
+		$("#question").html(current.question);
+		$("#author").html(this.linkToTwitter(current.author));
+		$("#number").html(current.number);
+	}
+
+	this.bindButtons = function() {
+		$("#next").unbind()
+		$("#next").click(function() {
+			arotd.nextQuestion();
+			display.show()
+		})
+
+		$("#previous").unbind()
+		$("#previous").click(function() {
+			arotd.previousQuestion();
+			display.show()
+		})
+
+		$("#random").unbind()
+		$("#random").click(function() {
+			arotd.randomQuestion();
+			display.show()
+		})
+
+		$("#first").unbind()
+		$("#first").click(function() {
+			arotd.firstQuestion();
+			display.show()
+		})
+
+		$("#last").unbind()
+		$("#last").click(function() {
+			arotd.lastQuestion();
+			display.show()
+		})
+	}
+
+	this.link = function(name) {
+		return name;
+	}
+
+	this.linkToTwitter = function(name) {
 		if (name.charAt(0) == "@") {
-			return "<a href='http://twitter.com/" + name.substr(1) + "'>" + name.substr(1)  + "</a>";
+			return "<a href='http://twitter.com/" + name.substr(1) + "'>" + name + "</a>";
 		} else {
 			return name;
 		}
 	}
+	
+}).apply(display)
 
-	$.realname = function(name) {
-		if (name.charAt(0) == "@") {
-			return name.substr(1);
-		} else {
-			return name;
+jQuery.fn.arotd = function() {
+	display.show();
+	display.bindButtons();
+}
+
+jQuery.fn.contrib = function() {
+	var map = arotd.authorWithQuestions();
+	var sortedAuthors = Object.keys(map).sort();
+	for (index in sortedAuthors) {
+		var author = sortedAuthors[index];
+		var ul = "<ul data-role='listview'>";
+		for (questionIndex in map[author]) {
+			var question = map[author][questionIndex];
+			ul += "<li><small>" + question.question + "</small></li>";
 		}
+		ul += "</ul>";
+		var lastElement = $("#authors").append("<div data-role='collapsible'><h1>" + author + "  (" + map[author].length + ")</h1>" + ul + "</div>");
+		var last = lastElement;
 	}
-})(jQuery)
+}
+
+
 

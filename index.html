@@ -9,24 +9,22 @@
 		<script src="jquery-1.9.1.min.js"></script>
 		<script src="jquery.mobile-1.3.0.min.js"></script>
 
-        <script type="text/javascript" src="persistent.js"></script>
-
         <script type="text/javascript" src="questions.js"></script>
         <script type="text/javascript" src="arotd.js"></script>
         <script>
         $(document).ready(function(){
-            $("body").arotd("#question", "#author", "#number", "#first", "#previous", "#random", "#next", "#last")
+            $("body").arotd()
             $("#contrib").contrib()
         });
         </script>
 
 		<style type=text/css>
-		    .ui-icon-red {
+		    .ui-icon-first {
 		      background-image: url(images/first-last.png);
 		      background-size: 72px 18px;
 		      background-position:  -36px 0px;
 		    }
-		    .ui-icon-gray {
+		    .ui-icon-last {
 		      background-image: url(images/first-last.png);
 		      background-size: 72px 18px;
 		      background-position:  -0px 0px;
@@ -48,12 +46,12 @@
         
         	<div data-role="footer" data-position=fixed id="footer">
 				<div data-role="controlgroup" data-type="horizontal" align="center">
-	                <a href="#" id="first" data-role=button data-icon="red" data-iconpos="notext"></a>
-	                <a href="#" id="previous" data-role=button data-icon="arrow-l"" data-iconpos="notext"></a>
+	                <a href="#" id="first" data-role=button data-icon="first" data-iconpos="notext"></a>
+	                <a href="#" id="previous" data-role=button data-icon="arrow-l" data-iconpos="notext"></a>
                 	<a href="#about" data-role=button data-transition="slideup" data-icon="info" data-iconpos="notext"></a>
                 	<a href="#" id="random" data-role=button data-icon="refresh" data-iconpos="notext"></a>
                 	<a href="#" id="next" data-role=button data-icon="arrow-r" data-iconpos="notext"></a>
-                	<a href="#" id="last" data-role=button data-icon="gray" data-iconpos="notext"></a>
+                	<a href="#" id="last" data-role=button data-icon="last" data-iconpos="notext"></a>
 				</div>
             </div>
         </div>
@@ -64,13 +62,13 @@
         	</div>
         	
         	<div data-role="content" id="contrib">
-                <ul data-role=listview data-filter="true" data-inset="true" data-autodividers="true"></ul>
+				<div data-role="collapsible-set" id="authors" data-theme="a" data-content-theme="c">
+				</div>
+<!--	            <ul data-role="listview" id="authors" data-filter="true" data-inset="true"></ul> -->
                 <p>Originally tweeted by <a href="http://twitter.com/retroflection">@Retroflection</a></p>
                 <p>Powered by <a href="http://www.yaal.fr">Yaal</a></p>
                 <p>Artwork by <a href="http://www.dot26.com">artix studio</a></p>
             </div>
-        
         </div>
-    
     </body>
 </html>
