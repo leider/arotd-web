@@ -16,20 +16,7 @@ var arotd = {};
 (function() {
 	var currentNumber = persistence.get_id();
 
-	var questions = [];
 	var authorWithQuestions;
-
-	function Question(questionArray) {
-		this.question = questionArray[0];
-		this.author = questionArray[1].toLowerCase();
-		this.number = questionArray[2];
-	}
-
-	(function() {
-		for (i in $._questions) {
-			questions.push(new Question($._questions[i]));
-		}
-	})()
 
 	this.currentQuestion = function() {
 		return questions[currentNumber];
@@ -90,7 +77,7 @@ var display = {};
 		var current = arotd.currentQuestion();
 		$("#question").html(current.question);
 		$("#author").html(this.linkToTwitter(current.author));
-		$("#number").html(current.number);
+		$("#number").html("Question #" + current.number);
 	}
 
 	this.bindButtons = function() {
@@ -174,7 +161,7 @@ jQuery.fn.contrib = function() {
 			ul += "<li><small>" + question.question + "</small></li>";
 		}
 		ul += "</ul>";
-		var lastElement = $("#authors").append("<div data-role='collapsible'><h1>" + author + "  (" + map[author].length + ")</h1>" + ul + "</div>");
+		var lastElement = $("#authors").append("<div data-role='collapsible'><h3>" + author + "  (" + map[author].length + ")</h3>" + ul + "</div>");
 		var last = lastElement;
 	}
 }

@@ -11,12 +11,12 @@
 		<script src="jquery-1.9.1.min.js"></script>
 		<script src="jquery.mobile-1.3.0.min.js"></script>
 
-        <script type="text/javascript" src="questions.js"></script>
+        <script type="text/javascript" src="questions.json.js"></script>
         <script type="text/javascript" src="arotd.js"></script>
         <script>
         $(document).ready(function(){
             $("body").arotd()
-            $("#contrib").contrib()
+            $("#authors-page").contrib()
         });
         </script>
 
@@ -41,9 +41,9 @@
         	</div>
         	
         	<div data-role="content" id="content">
+				<h1 id="number"></h1>
                 <p id="question"></p>
-                <p id="author"></p>
-                <p id="number"></p>
+                <p align="right" id="author"></p>
             </div>
         
         	<div data-role="footer" data-position=fixed id="footer">
@@ -63,14 +63,12 @@
                 <h1>Authors</h1>
         	</div>
         	
-        	<div data-role="content" id="contrib">
-				<div data-role="collapsible-set" id="authors" data-theme="a" data-content-theme="c">
-					
-				</div>
+        	<div data-role="content" id="contrib"> 
+				<div data-role="collapsible-set" id="authors" data-theme="a" data-content-theme="c">				</div>
                 <p>Originally tweeted by <a href="http://twitter.com/retroflection">@Retroflection</a></p>
                 <p>Site by <a href="http://www.twitter.com/leiderleider">@leiderleider</a>, based on work by<a href="http://www.yaal.fr">Yaal</a></p>
                 <p>Artwork by <a href="http://www.dot26.com">artix studio</a></p>
-            </div>
+            </div> 
         </div>
     </body>
 </html>
